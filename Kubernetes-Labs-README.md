@@ -271,6 +271,11 @@ kubectl describe services example-service
 # to get kubectl endpoint 
 kubectl get ep webapp-service
 
+#Cleaning :
+kubectl delete service hello-node
+kubectl delete deployment hello-node
+ 
+
 ```
 
 
