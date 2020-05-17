@@ -186,3 +186,94 @@ $ kubectl get deployment nginx-deployment
 $ kubectl describe deployment nginx-deployment
 ```
 
+
+#### Services :
+
+to enable connectivity between groups or pods , and enhance connectivity for data source or bachend .
+is an object like a pod replicat set to listen to the port and forward request to the pod ,
+many types of services :
+Image=Images/pods
+![types of services](images/TypesOfServices.JPG)
+
+
+![exemple](images/ServicesNodePort.JPG)
+
+1. create diployement :
+
+```yml
+apiVersion: v1
+Kind: ReplicationController
+metadata:
+ name : myapp-rc
+ labesl:
+   app: myapp
+   type: front-end
+spec:
+  template: # pod template we can re use the previos definition of nginx 
+pod  
+      metadata:
+       name : myapp-pod
+       labesl:
+         app: myapp
+      spec:
+        containers: 
+          - name: nginx-container 
+            image: nginx
+  replicas: 3 # to create a 3 instance of pod 
+```
+
+2. define service :
+
+service-definition.yml :
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx #serviceName
+
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30008
+
+  selector: # the metadata of your pod application
+    app: myapp
+    type: front-end
+
+ ```
+
+ 3. check the services :
+
+ to create a service :
+ ``` kubectl create -f
+     kubectl get services
+  ```
+
+4. test on the defined port number :
+ by curl command : curl http:<IPCluster>:30008 
+and now we can access to the nginx directly on 30008 port number
+
+Note : Kubernetes has automatically create a servces accross multiples Nodes on the cluster 
+
+some tools command :
+
+```sh
+kubectl get services # or kubectl get svc
+kubectl describe svc kubernetes # to get information about the services
+kubectl expose deployment hello-world --type=NodePort --target-port=8080 --node-port=30080 --name=example-service --dry-run -o yaml > service-definition.yml #Create a Service object with example-service as name  that exposes the deployment named hello-world
+#and then create the service by :
+kubectl apply -f service-definition.yml
+
+kubectl describe services example-service
+
+# to get kubectl endpoint 
+kubectl get ep webapp-service
+
+```
+
+
+#### References :
+
+deployment detailed : https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
