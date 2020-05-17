@@ -52,7 +52,8 @@ Replica set and Replication controller : Replication controller is a
 older tecnologie replaced by Replica set
 
 replication controller by yaml file named rc-definition.yml :
-```apiVersion: v1
+```yml
+apiVersion: v1
 Kind: ReplicationController
 metadata:
  name : myapp-rc
@@ -144,7 +145,7 @@ spec:
         ports:
         - containerPort: 80
 ```
-1. Create the Deployment by running the following command: ``` kubectl apply -f controllers/nginx-deployment.yaml  ``` 
+1. Create the Deployment by running the following command: ``` kubectl apply -f controller/nginx-deployment.yaml  ``` 
 
 2. check if the Deployment ``` kubectl get deployments  ```
 
