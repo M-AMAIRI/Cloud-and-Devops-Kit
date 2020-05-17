@@ -1,0 +1,2 @@
+target1 ansible_host=YourIpServerAdrTarget1 ansible_ssh_pass=PasswordSShAccessTarget1
+target2 ansible_host=YourIpServerAdrTarget2 ansible_ssh_pass=PasswordSShAccessTarget2

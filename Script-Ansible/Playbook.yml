@@ -1,0 +1,74 @@
+-
+ name: check connectivity
+ hosts: all
+
+ tasks:
+  - name: Installation and Enable firewalld
+    service: name=firewalld state=started enabled=yes
+
+
+  - name: Installation MariaDB mariadb-server
+    yum:
+      name: mariadb-server
+
+  - name: create file mycnf
+    file:
+      path: /etc/my.cnf
+      state: touch
+
+  - name: Installation MariaDB - Start Service
+    service:
+      name: mariadb
+      state: started
+
+  - name: Installation MariaDB -  systemctl enable mariadb
+    command: systemctl enable mariadb
+
+  - name: firewall-cmd 1
+    command: firewall-cmd --permanent --zone=public --add-port=3306/tcp
+
+  - name: firewall-cmd 2
+    command: firewall-cmd  --reload
+
+  - name: Reload firewall-cmd
+    command: sudo firewall-cmd --reload
+
+
+  - name: Import ecomdb
+    shell: mysql ecomdb < dump.sql
+
+  - name: install httpd
+    yum:
+      name: httpd
+
+  - name: install php
+    yum:
+      name: php
+
+  - name: install php-mysql
+    yum:
+      name: php-mysql
+
+  - name: install package
+    command: firewall-cmd --permanent --zone=public --add-port=80/tcp
+
+  - name: reload
+    command: firewall-cmd --reload
+
+  - name: create file httpd.conf
+    file:
+      path: /etc/httpd/conf/httpd.conf
+      state: touch
+
+  - name: start httpd
+    command: service httpd start
+
+  - name: start httpd
+    command: systemctl enable httpd
+
+  - name: install git
+    command: yum install -y git
+
+  - name: clone to repository
+    command: git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+
