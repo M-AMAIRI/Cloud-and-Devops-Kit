@@ -1,0 +1,173 @@
+Security :
+Account 
+to create service account for a bots : kubectl create serviceaccount sa1 ; kubectl list serviceaccount ;
+
+for user : all user managed by apiserver ( authenticate )
+TLS certificate in kubernetes :
+Certificate Public key : *.crt *.pem 
+private key : *.key *-key.pem
+
+
+Generate a certificate :
+openssl genrsa -out ca.key 2048  
+
+openssl req -new -key ca.key subj "/CN=KUBERNETES-CA" -out ca.csr 
+
+openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt # to henerate a signed one  
+
+
+
+
+to generate a admin user :
+openssl genrsa -out admin.key 2048
+openssl req -new -key admin.key subj "/CN=KUBE-ADMIN" -out admin.csr
+openssl x509 -req -in admin.csr -CA ca.crt -CAKey ca.crt -out admin.crt
+
+
+
+
+to create a user :
+1. create a CertificateSigingRequest Object
+2. Review Request
+3. Approve Requests
+4. Share Certs To Users
+
+
+1. 
+openssl genrsa -out jane.key 2048
+openssl req -new -key admin.key subj "/CN=jane" -out jane.csr 
+and then create a CertificateSigingRequest Object using a YML file 
+
+apiVersion: certificates.k8s.io/v1beta1
+kind: CertificateSigningRequest
+metadata:
+  name: jane
+spec:
+  group:
+  - system:authenticated
+  request: $(cat jane.csr | base64 | tr -d '\n')
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth
+
+
+ 2. kubectl get csr 
+    kubectl certificate approve jane
+
+
+
+
+
+
+
+KubeConfig File :
+
+kubectl get pods 
+    --server my-kube-playground:6443
+    --client-key admin.key
+    --client-certificate admin.crt
+    --certificate-autority ca.crt
+
+to do that by default sore those information in a KubeConfig File under $HOME/.kube/config
+    --server my-kube-playground:6443
+    --client-key admin.key
+    --client-certificate admin.crt
+    --certificate-autority ca.crt
+
+is in a specific format 
+
+clusters : Developement , production,Google 
+Context : Admin@Production, Dev@Google ( Developper can do a deployement on google )
+users : Admin,Dev User , Prod User
+
+a yaml file :
+
+apiVersion: v1
+kind: Config
+current-context: development@developer
+clusters:
+- cluster:
+  name: development
+- cluster:
+  name: scratch
+users:
+- name: developer
+- name: experimenter
+contexts:
+- context:
+  name: development@developer
+
+- context:
+  name: scratch@experimenter
+
+
+
+
+to view an actual context config file : kubectl config view
+
+
+to change a actual context : kubectl config use-context scratch@experimenter
+
+
+example :
+
+How many clusters are defined in the default kubeconfig file?
+ kubectl config view
+to see a specific config file my-kube-config that has been created just do this : kubectl config view --kubeconfig my-kube-config
+I would like to use the dev-user to access test-cluster-1(research). Set the current context to the right one so I can do that.
+
+kubectl config --kubeconfig=/root/my-kube-config use-context research
+
+
+
+
+
+
+Role Based Access Controls :
+
+example :
+
+1. a role for developer
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: developer
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+  #ressourceName: ["blue","orange"] to give a access for the developper just for orange and blue pod
+
+to create a role by using : kubectl create -f developer-role.yaml
+
+2. To link a user to a rule :
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer
+  namespace: default    // all the role and the role binding is created to a default namespace
+subjects:
+- kind: User
+  name: jane 
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+
+and to create that : kubectl create -f developer-role-binding.yaml
+
+
+some command :
+kubectl get roles
+kubectl get rolebindings
+kubectl describe roles/rolebindings
+
+
+to check : kubectl auth can-i create deployements --as dev-user
+
+or :  kubectl auth can-i create deployements --as dev-user --namespace test
