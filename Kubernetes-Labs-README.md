@@ -317,9 +317,45 @@ spec:
         add: ["NET_ADMIN", "SYS_TIME"]
 ```
 
+  spec:
+    securityContext:
+      runAsUser: 1000
+      fsGroup: 1000
 
 
 
+
+
+
+### Netwwork Policy :
+
+
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+  
+spec:
+ podSelector:
+    matchLabels:
+      role: db
+ policyTypes:
+ - ingress:
+ ingress:
+ from:
+   - podSelector:
+     matchLabels:
+       name: api-pod
+   ports:
+   -protocol: TCP
+    port: 3306 
+    
+# allow ingress traffic from api-pod on port 3306
+   
+ 
+```
 
 #### References :
 
