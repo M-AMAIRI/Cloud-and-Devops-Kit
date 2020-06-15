@@ -344,7 +344,7 @@ spec:
  policyTypes:
  - ingress:
  ingress:
- from:
+ - from:
    - podSelector:
      matchLabels:
        name: api-pod
