@@ -279,6 +279,30 @@ kubectl delete deployment hello-node
 ```
 
 
+
+
+
+
+```
+Source IP for Services with Type=ClusterIP
+kubectl expose deployment source-ip-app --name=clusterip --port=80 --target-port=8080
+
+
+Source IP for Services with Type=NodePort
+kubectl expose deployment source-ip-app --name=nodeport --port=80 --target-port=8080 --type=NodePort
+
+
+
+Source IP for Services with Type=LoadBalancer
+kubectl expose deployment source-ip-app --name=loadbalancer --port=80 --target-port=8080 --type=LoadBalancer
+
+
+
+
+
+
+```
+
 #### References :
 
 deployment detailed : https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
