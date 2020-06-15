@@ -296,12 +296,30 @@ kubectl expose deployment source-ip-app --name=nodeport --port=80 --target-port=
 Source IP for Services with Type=LoadBalancer
 kubectl expose deployment source-ip-app --name=loadbalancer --port=80 --target-port=8080 --type=LoadBalancer
 
+```
 
-
-
-
+Container security : security context 
+in runnig container wwe put some security input such as id of user to run this container or ...
+docker run --cap-add MAC_ADMIN ubuntu 
+that can be configured in the container level or pod level 
 
 ```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: security-context-demo-4
+spec:
+  containers:
+  - name: sec-ctx-4
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+```
+
+
+
+
 
 #### References :
 
