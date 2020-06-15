@@ -357,6 +357,30 @@ spec:
  
 ```
 
+
+
+Internal can access payroll on 8080 por number  
+```
+
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: internal
+    ports:
+    - port: 8080
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      name: payroll
+  policyTypes:
+  - Ingress
+  
+  
+
+```
+
 #### References :
 
 deployment detailed : https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
