@@ -1,8 +1,5 @@
-
 # Summary​ 
-
 this documentation covers some tutorials about kubetnetes, Ansible and Kafka :
-
 * [Kubernetes]()
     * [Security in Kubernetes](https://github.com/M-AMAIRI/Cloud-and-Devops-Kit/tree/master/Security-Kubernetes)    
         * [Users in Kubernetes](https://github.com/M-AMAIRI/Cloud-and-Devops-Kit/blob/master/Security-Kubernetes/1.%20Users%20in%20Kubernetes.md)    
@@ -15,8 +12,5 @@ this documentation covers some tutorials about kubetnetes, Ansible and Kafka :
     * [Utility-Kubernetes](https://github.com/M-AMAIRI/Cloud-and-Devops-Kit/blob/master/Utility-Kubernetes/Commands.md)
     * [Pods](https://github.com/M-AMAIRI/Cloud-and-Devops-Kit/blob/master/Pods-yaml-Kubernetes/Pods.md)
     * [Volumes-Kubernetes](https://github.com/M-AMAIRI/Cloud-and-Devops-Kit/blob/master/Volumes-Kubernetes/PV-PVC.md)
-   
-
-* [Kafka]()    
-    
+* [Kafka]()
 * [Ansible]()
