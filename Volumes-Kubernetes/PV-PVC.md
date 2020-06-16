@@ -1,4 +1,6 @@
+### All In One PV and PVC 
 
+```yaml
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -29,5 +31,5 @@ spec:
     requests:
       storage: 5Gi
       
-      
+```
       

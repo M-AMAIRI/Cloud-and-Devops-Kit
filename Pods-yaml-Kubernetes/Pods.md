@@ -1,4 +1,8 @@
 
+### BusyBox with sleep
+
+```yaml
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -15,8 +19,11 @@ spec:
     name: busybox
   restartPolicy: Always
 
+```
 
+### redis avec volumeMounts
 
+```yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -31,26 +38,12 @@ spec:
   volumes:
   - name: redis-storage
     emptyDir: {}
+``` 
     
-    
-    apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  labels:
-    name: mysql
-spec:
-  type: NodePort
-  ports:
-    - port: 3036
-      nodePort: 30036
-      name: http
-  selector:
-    name: mysql
-    
-    
-    
-   apiVersion: apps/v1 
+
+### Deployment pods with replicas 
+```yml
+apiVersion: apps/v1 
 kind: Deployment
 metadata:
   name: hr-web-app
@@ -75,14 +68,18 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
-            
-            
-            
-     
-            
- Create a service messaging-service to expose the messaging application within the cluster on port 6379.
+```  
 
-apiVersion: v1kind: Service
+            
+            
+            
+### Example :
+            
+Create a service messaging-service to expose the messaging application within the cluster on port 6379.
+
+```yml
+apiVersion: v1
+kind: Service
 metadata:
   name: messaging-service
   labels:
@@ -97,9 +94,27 @@ spec:
       app: messaging
       role: master
       tier: msg
-      
-      
+```
 
-            
-    
-    
+
+
+### for example 
+
+Create a new pod called super-user-pod with image busybox:1.28. Allow the pod to be able to set system_time
+The container should sleep for 4800 seconds
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  name: super-user-pod
+spec:
+  containers:
+  - image: busybox:1.28
+​    name: super-user-pod
+​    command: ["sleep","4800"]
+​    securityContext:
+​      capabilities:
+​        add: ["SYS_TIME"]
+```
