@@ -33,3 +33,12 @@ spec:
       
 ```
       
+      
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+            
+            
+            
+            
