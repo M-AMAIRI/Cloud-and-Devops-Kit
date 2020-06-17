@@ -76,3 +76,22 @@ Troolble shooting errors in kubernetes : https://learnk8s.io/a/troubleshooting-k
 CKA practice Link : https://marsforever.com/2020/01/22/CKA-with-Practice-Tests/
  
 
+
+##update image name in deployements :
+
+```
+kubectl set image deployment/my-deployment mycontainer=myimage
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
