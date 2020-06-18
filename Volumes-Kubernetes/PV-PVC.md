@@ -1,79 +1,32 @@
 ### All In One PV and PVC 
 
 ```yaml
+apiVersion: v1
 kind: PersistentVolume
-apiVersion: v1
 metadata:
-  name: postgres-pv-volume
-  labels:
-    type: local
-    app: postgres
+  name: pv0003
 spec:
-  storageClassName: manual
   capacity:
-    storage: 5Gi
+    storage: 10Mi
+  volumeMode: Filesystem
   accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/mnt/data"
+    - ReadWriteOnce
+  storageClassName: slow # or manual 
 ---
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pv-claim
-  labels:
-    app: postgres
+  name: myclaim
 spec:
-  storageClassName: manual
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  volumeMode: Filesystem
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Mi
       
 ```
-      
-      
-      volumes:
-        - name: postgredb
-          persistentVolumeClaim:
-            claimName: postgres-pv-claim
-            
- ```yml
- apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: postgres
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: postgres
-    spec:
-      containers:
-        - name: postgres
-          image: postgres:10.4
-          imagePullPolicy: "IfNotPresent"
-          ports:
-            - containerPort: 5432
-          envFrom:
-            - configMapRef:
-                name: postgres-config
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgredb
-      volumes:
-        - name: postgredb
-          persistentVolumeClaim:
-            claimName: postgres-pv-claim
- ```         
- 
- 
- 
- 
- 
- 
+
  
  Pod with PVC pv :
  
@@ -123,6 +76,7 @@ spec:
   containers:
     - name: task-pv-container
       image: nginx
+      volumeMode: Filesystem
       ports:
         - containerPort: 80
           name: "http-server"
