@@ -102,9 +102,9 @@ kubectl get pod nginx-resolver -o wide
 
 
 ### Create a Pod called redis-storage with image: redis:alpine with a Volume of type emptyDir that lasts for the life of the Pod. Specs on the right.
-Pod named 'redis-storage' created
-Pod 'redis-storage' uses Volume type of emptyDir
-Pod 'redis-storage' uses volumeMount with mountPath = /data/redis
+### Pod named 'redis-storage' created
+### Pod 'redis-storage' uses Volume type of emptyDir
+### Pod 'redis-storage' uses volumeMount with mountPath = /data/redis
 
 kubectl run redis-storage --image=redis:alpine --restart=Never -o yaml --dry-run > redis-storage.yaml
 kubectl apply -f redis-torage.yaml
