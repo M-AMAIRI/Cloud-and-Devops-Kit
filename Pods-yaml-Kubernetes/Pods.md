@@ -118,3 +118,57 @@ spec:
 ​      capabilities:
 ​        add: ["SYS_TIME"]
 ```
+
+
+
+### static pods :
+
+```
+ssh my-node1
+
+#Get the static pod's path
+cat config.yaml | grep static
+
+#Get the path is /etc/kubernetes/manifests
+cd /etc/kubernetes/
+
+#Create directory manifests
+mkdir manifests
+
+
+#create your yml file of pods on master :
+kubectl run --generator=run-pod/v1 nginx-critical --image=nginx --dry-run -o yaml > nginx-critical.yaml
+# or :
+
+# Run this command on the node where kubelet is running
+mkdir /etc/kubelet.d/
+cat <<EOF >/etc/kubelet.d/static-web.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: static-web
+  labels:
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - name: web
+          containerPort: 80
+          protocol: TCP
+EOF
+
+https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/#configuration-files
+
+systemctl restart kubelet
+
+
+
+
+
+```
+
+
+
+
