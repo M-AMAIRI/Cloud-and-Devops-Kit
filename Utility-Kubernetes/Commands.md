@@ -86,13 +86,13 @@ kubectl set image deployment/my-deployment mycontainer=myimage
 
 # creating pods and exposing
 
-#Create pod
+### Create pod
 kubectl run nginx-resolver --image=nginx --generator=run-pod/v1
 
-#Create service 
+### Create service 
 kubectl expose pod nginx-resolver --name=nginx-resolver-service  --port=80 --target-port=80 --type=ClusterIP
 
-#verify svc
+### verify svc
 kubectl describe svc nginx-resolver-service
 kubectl get pod nginx-resolver -o wide
 
@@ -101,7 +101,7 @@ kubectl get pod nginx-resolver -o wide
 
 
 
-Create a Pod called redis-storage with image: redis:alpine with a Volume of type emptyDir that lasts for the life of the Pod. Specs on the right.
+### Create a Pod called redis-storage with image: redis:alpine with a Volume of type emptyDir that lasts for the life of the Pod. Specs on the right.
 Pod named 'redis-storage' created
 Pod 'redis-storage' uses Volume type of emptyDir
 Pod 'redis-storage' uses volumeMount with mountPath = /data/redis
@@ -114,16 +114,14 @@ kubectl apply -f redis-torage.yaml
 
 
 
-Expose the hr-web-app as service hr-web-app-service application on port 30082 on the nodes on the cluster
-The web application listens on port 8080
-
+### Expose the hr-web-app as service hr-web-app-service application on port 30082 on the nodes on the cluster The web application listens on port 8080
 kubectl expose deployment hr-web-app --type=NodePort --port=8080 --name=hr-web-app-service --dry-run -o yaml > hr-web-app-service.yaml
 
 
 
 
 
-Create a deployment named hr-web-app using the image kodekloud/webapp-color with 2 replicas
+### Create a deployment named hr-web-app using the image kodekloud/webapp-color with 2 replicas
 kubectl create deploy hr-web-app –image=kodekloud/webapp-color
 kubectl scale deploy hr-web-app –replicas=2
 
@@ -133,14 +131,14 @@ kubectl scale deploy hr-web-app –replicas=2
 
 
 
-Deploy a messaging pod using the redis:alpine image with the labels set to tier=msg.
+### Deploy a messaging pod using the redis:alpine image with the labels set to tier=msg.
 kubectl run messaging --generator=run-pod/v1 --restart=Never --image=redis:alpine -l tier=msg
 
 
 
 
 
-Deploy a pod named nginx-pod using the nginx:alpine image.
+### Deploy a pod named nginx-pod using the nginx:alpine image.
 kubectl run nginx-pod --image=nginx:alpine --restart=Never
 
 
